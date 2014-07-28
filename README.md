@@ -19,6 +19,13 @@ The underlying code is based on the nutch-htmlunit plugin, which was in turn bas
 
 - Currently, the plugin is set to retrieve only the content of `<body>` - you can change this yourself in `src/plugin/lib-selenium/src/java/org/apache/nutch/protocol/selenium/HttpWebClient.java`
 
+## Getting Selenium Hub/Node Started (Docker)
+
+I've created two docker containers to help you get started: Selenium-Hub and Selenium-Node if you're comfortable with Docker.
+
+1. https://github.com/momer/docker-selenium-hub
+2. https://github.com/momer/docker-selenium-node
+
 ## Installation (tested on Ubuntu 14.0x)
 
 Part 1: Setting up Selenium
