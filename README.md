@@ -15,6 +15,10 @@ The underlying code is based on the nutch-htmlunit plugin, which was in turn bas
 
 - Set up to handle https:// as well in Nutch
 
+## NOTE:
+
+- Currently, the plugin is set to retrieve only the content of `<body>` - you can change this yourself in `src/plugin/lib-selenium/src/java/org/apache/nutch/protocol/selenium/HttpWebClient.java`
+
 ## Installation (tested on Ubuntu 14.0x)
 
 Part 1: Setting up Selenium
