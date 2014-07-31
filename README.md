@@ -11,6 +11,11 @@ C) Not have to wait another 2 years for Nutch to patch in either the [Ajax crawl
 
 The underlying code is based on the nutch-htmlunit plugin, which was in turn based on nutch-httpclient. I also have patches to send through on nutch-htmlunit which get it working with nutch 2.2.1, so stay tuned if you want to use htmlunit for some reason.
 
+## Inspiration / borrowed code
+
+- https://github.com/xautlx/nutch-htmlunit which borrowed heavily from
+- https://nutch.apache.org/apidocs/apidocs-2.2.1/org/apache/nutch/protocol/httpclient/package-summary.html
+
 ## TODO
 
 - Set up to handle https:// as well in Nutch
@@ -28,26 +33,7 @@ I've created two docker containers to help you get started: Selenium-Hub and Sel
 
 ## Installation (tested on Ubuntu 14.0x)
 
-Part 1: Setting up Selenium
-
-A) Ensure that you have Firefox installed
-```
-# More info about the package @ [launchpad](https://launchpad.net/ubuntu/trusty/+source/firefox)
-
-sudo apt-get install firefox
-```
-B) Install Xvfb and its associates
-```
-sudo apt-get install xorg synaptic xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi \
-    xfonts-75dpi xfonts-base xfonts-scalable freeglut3-dev dbus-x11 openbox x11-xserver-utils \
-    libxrender1 cabextract
-```
-C) Set a display for Xvfb, so that firefox believes a display is connected
-```
-sudo /usr/bin/Xvfb :11 -screen 0 1024x768x24 &
-sudo export DISPLAY=:11
-```
-Part 2: Installing plugin for Nutch (where NUTCH_HOME is the root of your nutch install)
+Part 1: Installing plugin for Nutch (where NUTCH_HOME is the root of your nutch install)
 
 A) Add Selenium to your Nutch dependencies
 ```
@@ -56,13 +42,13 @@ A) Add Selenium to your Nutch dependencies
 <ivy-module version="1.0">
   <dependencies>
     ...
+
     <!-- begin selenium dependencies -->
     <dependency org="org.seleniumhq.selenium" name="selenium-java" rev="2.42.2" />
 
-    <dependency org="com.opera" name="operadriver" rev="1.5">
-      <exclude org="org.seleniumhq.selenium" name="selenium-remote-driver" />
-    </dependency>
     <!-- end selenium dependencies -->
+
+    ...
   </dependencies>
 </ivy-module>
 ```
@@ -78,9 +64,10 @@ B) Add the required plugins to your `NUTCH_HOME/src/plugin/build.xml` - or use t
     ... 
     <ant dir="lib-selenium" target="deploy"/>
     <ant dir="protocol-selenium" target="deploy" />
+    ...
   </target>
-      ...
 </project>
+
 ```
 C) Ensure that the plugin will be used as the fetcher/initial parser in your config
 ```
@@ -88,6 +75,7 @@ C) Ensure that the plugin will be used as the fetcher/initial parser in your con
 
 <configuration>
   ...
+
   <property>
     <name>plugin.includes</name>
     <value>protocol-selenium|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|urlnormalizer-(pass|regex|basic)|scoring-opic</value>
@@ -100,9 +88,11 @@ C) Ensure that the plugin will be used as the fetcher/initial parser in your con
     underlying commons-httpclient library.
     </description>
   </property>
-</configuration>
-```
 
+  ...
+</configuration>
+
+```
 D) Define your Selenium Hub configuration
 ```
 <!-- NUTCH_HOME/conf/nutch-site.xml -->
@@ -147,7 +137,7 @@ F) Compile nutch
 ant runtime
 ```
 
-G) Start your web crawl (Ensure that you followed the above steps and have started your xvfb display as shown above)
+G) Start your web crawl (Ensure that you followed the above steps and that your Selenium-Hub / Selenium-Node set-up is running)
 ```
 NUTCH_HOME/runtime/local/bin/crawl /opt/apache-nutch-2.2.1/urls/ webpage $NUTCH_SOLR_SERVER $NUTCH_CRAWL_DEPTH
 ```
