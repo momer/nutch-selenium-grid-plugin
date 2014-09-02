@@ -31,9 +31,9 @@ public class HttpWebClient {
             // Wait for the page to load, timeout after 3 seconds
             new WebDriverWait(driver, 3);
 
-            String innerHtml = driver.findElement(By.tagName("body")).getAttribute("innerHTML");
+            String sourceHtml = driver.getPageSource();
 
-            return innerHtml;
+            return sourceHtml;
             // I'm sure this catch statement is a code smell ; borrowing it from lib-htmlunit
         } catch (Exception e) {
             throw new RuntimeException(e);
